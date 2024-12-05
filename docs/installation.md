@@ -12,7 +12,7 @@ conda activate embodiedocc
 pip install torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 --index-url https://download.pytorch.org/whl/cu113
 ```
 
-## 3. Install packages following [GaussianFormer](https://github.com/huang-yh/GaussianFormer)
+## 3. Install some packages following [GaussianFormer](https://github.com/huang-yh/GaussianFormer)
 
 ### 1. Install packages from MMLab
 ```bash
