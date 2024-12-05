@@ -12,7 +12,7 @@ conda activate embodiedocc
 pip install torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 --index-url https://download.pytorch.org/whl/cu113
 ```
 
-## 3. Install packages following [GaussianFormer](https://github.com/huang-yh/GaussianFormer)
+## 3. Install some packages following [GaussianFormer](https://github.com/huang-yh/GaussianFormer)
 
 ### 1. Install packages from MMLab
 ```bash
@@ -31,5 +31,14 @@ pip install timm
 
 ### 3. Install custom CUDA ops
 ```bash
+git clone --recursive https://github.com/YkiWu/EmbodiedOcc.git
+cd EmbodiedOcc
 cd model/encoder/gaussianformer/ops && pip install -e .
 cd model/head/gaussian_occ_head/ops/localagg && pip install -e .
+```
+
+## 4. Install the additional dependencies
+```bash
+cd EmbodiedOcc
+pip install -r requirements.txt
+```
