@@ -35,8 +35,9 @@ git clone --recursive https://github.com/YkiWu/EmbodiedOcc.git
 cd EmbodiedOcc
 cd model/encoder/gaussianformer/ops && pip install -e .
 cd model/head/gaussian_occ_head/ops/localagg && pip install -e .
+```
 
-## 4. Install the additional dependencies:
+## 4. Install the additional dependencies
 ```bash
 cd EmbodiedOcc
 pip install -r requirements.txt
