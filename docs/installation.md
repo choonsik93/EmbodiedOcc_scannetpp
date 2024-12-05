@@ -42,3 +42,48 @@ cd model/head/gaussian_occ_head/ops/localagg && pip install -e .
 cd EmbodiedOcc
 pip install -r requirements.txt
 ```
+
+## 5. Download Depth-Anything-V2 and make some slight changes
+```bash
+cd EmbodiedOcc
+git clone https://github.com/DepthAnything/Depth-Anything-V2.git
+```
+
+**Folder structure**
+```
+EmbodiedOcc
+├── ...
+├── Depth-Anything-V2
+```
+
+Go to **Depth-Anything-V2/metric_depth/depth_anything_v2/dpt.py** and change the function **infer_image** in the class **DepthAnythingV2** as follows:
+```Python
+def infer_image(self, image, h_, w_, input_size=518):
+    depth = self.forward(image)
+    depth = F.interpolate(depth[:, None], (h_, w_), mode="bilinear", align_corners=True)[0, 0]
+    return depth
+```
+
+## 6. Download EfficientNet-Pytorch
+```bash
+cd EmbodiedOcc
+git clone https://github.com/lukemelas/EfficientNet-PyTorch.git
+```
+
+**Folder structure**
+```
+EmbodiedOcc
+├── ...
+├── Depth-Anything-V2
+├── EfficientNet-Pytorch
+```
+
+## 7. Download our [finetuned checkpoint](https://huggingface.co/YkiWu/EmbodiedOcc) of Depth-Anything-V2 on Occ-ScanNet and put it under the **checkpoints**
+
+**Folder structure**
+```
+EmbodiedOcc
+├── ...
+├── checkpoints/
+│   ├── occscannet/
+```

@@ -32,7 +32,7 @@ Unzip and move them to **data/scene_occ**.
 
 **Folder structure**
 ```
-GaussianFormer
+EmbodiedOcc
 ├── ...
 ├── data/
 │   ├── occscannet/
