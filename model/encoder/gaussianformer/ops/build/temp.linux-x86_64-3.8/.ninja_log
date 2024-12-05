@@ -1,0 +1,3 @@
+# ninja log v5
+1	11807	1733411071551035532	/data1/code/wyq/gaussianindoor/EmbodiedOcc/model/encoder/gaussianformer/ops/build/temp.linux-x86_64-3.8/src/deformable_aggregation_cuda.o	f3b3a1662684da16
+0	15074	1733411074803039200	/data1/code/wyq/gaussianindoor/EmbodiedOcc/model/encoder/gaussianformer/ops/build/temp.linux-x86_64-3.8/src/deformable_aggregation.o	154cbf592da79d0b
