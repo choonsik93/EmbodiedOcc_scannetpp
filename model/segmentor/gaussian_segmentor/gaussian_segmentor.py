@@ -49,7 +49,7 @@ class GaussianSegmentor(BaseModule):
                     'vitg': {'encoder': 'vitg', 'features': 384, 'out_channels': [1536, 1536, 1536, 1536]}
                 }
                 self.depthanything = DepthAnythingV2(**{**model_configs['vitb'], 'max_depth':20})
-                checkpoint = torch.load('/data1/code/wyq/gaussianindoor/EmbodiedOcc/checkpoints/epoch_56.pth', map_location='cpu')['model']
+                checkpoint = torch.load('/data1/code/wyq/gaussianindoor/EmbodiedOcc/checkpoints/finetune_scannet_depthanythingv2.pth', map_location='cpu')['model']
                 new_state_dict = {}
                 for k, v in checkpoint.items():
                     if k.startswith('module.'):

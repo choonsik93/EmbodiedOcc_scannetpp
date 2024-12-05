@@ -85,5 +85,5 @@ EmbodiedOcc
 EmbodiedOcc
 ├── ...
 ├── checkpoints/
-│   ├── occscannet/
+│   ├── finetune_scannet_depthanythingv2.pth
 ```
