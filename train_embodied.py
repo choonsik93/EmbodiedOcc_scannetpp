@@ -3,7 +3,7 @@ import torch
 import gc
 import torch.distributed as dist
 from torch.utils.tensorboard import SummaryWriter
-os.environ['CUDA_VISIBLE_DEVICES'] = '0, 1, 2, 3'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0, 1, 2, 3, 4, 5, 6, 7'
 os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
 # torchrun --nproc_per_node=4 train_embodied.py
 from utils.iou_eval import IOUEvalBatch
