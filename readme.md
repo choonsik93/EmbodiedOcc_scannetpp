@@ -7,7 +7,9 @@
 
 $\dagger$ Project leader
 
-EmbodiedOcc formulate **an embodied 3D occupancy prediction task** and propose a Gaussian-based framework to accomplish it.
+![demo](./assets/demo_gif.gif)
+
+EmbodiedOcc formulates **an embodied 3D occupancy prediction task** and proposes a Gaussian-based framework to accomplish it.
 
 ![teaser](./assets/teaser_v4.png)
 
@@ -82,7 +84,7 @@ EmbodiedOcc
     $ torchrun --nproc_per_node=1 vis_embodied.py --work-dir workdir/train_embodied_mini
     ```
 
-Please use the same workdir path with training set.
+Please use the same workdir path with training setting.
 
 ## Related Projects
 
