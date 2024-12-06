@@ -17,7 +17,6 @@ Targeting progressive embodied exploration in indoor scenarios, we formulate an 
 Our EmbodiedOcc maintains an explicit Gaussian memory of the current scene and updates this memory during the exploration of this scene.
 Both quantitative and visualization results have shown that our EmbodiedOcc outperforms existing methods in terms of local occupancy prediction and accomplishes the embodied occupancy prediction task with high accuracy and strong expandability.
 
-![overview](./assets/Main.png)
 
 ## Getting Started
 
