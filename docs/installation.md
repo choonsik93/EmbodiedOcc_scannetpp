@@ -17,8 +17,8 @@ pip install torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 --index-url htt
 ### 1. Install packages from MMLab
 ```bash
 pip install openmim==0.3.9
-mim install mmcv==2.1.0
-mim install mmdet==3.3.0
+mim install mmcv==2.0.1
+mim install mmdet==3.0.0
 mim install mmsegmentation==1.2.2
 mim install mmdet3d==1.1.1
 ```
@@ -27,6 +27,7 @@ mim install mmdet3d==1.1.1
 ```bash
 pip install spconv-cu114==2.3.6
 pip install timm
+pip install vtk==9.0.1
 ```
 
 ### 3. Install custom CUDA ops
