@@ -1,5 +1,5 @@
 # EmbodiedOcc: Embodied 3D Occupancy Prediction for Vision-based Online Scene Understanding
-### [Paper]()  | [Project Page]() 
+### [Paper](https://arxiv.org/abs/2412.04380)  | [Project Page](https://ykiwu.github.io/EmbodiedOcc/) 
 
 > EmbodiedOcc: Embodied 3D Occupancy Prediction for Vision-based Online Scene Understanding
 
