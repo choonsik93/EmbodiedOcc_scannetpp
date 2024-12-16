@@ -71,8 +71,11 @@ class GaussianSegmentorOnline(BaseModule):
             basemodel_name = "tf_efficientnet_b7_ns"
             num_features = 2560
             print("Loading base model ()...".format(basemodel_name), end="")
+            # basemodel = torch.hub.load(
+            #     "/home/wyq/.cache/torch/hub/rwightman_gen-efficientnet-pytorch_master", basemodel_name, pretrained=True, trust_repo=True, source='local'
+            # )
             basemodel = torch.hub.load(
-                "/home/wyq/.cache/torch/hub/rwightman_gen-efficientnet-pytorch_master", basemodel_name, pretrained=True, trust_repo=True, source='local'
+                "rwightman/gen-efficientnet-pytorch", basemodel_name, pretrained=True
             )
             print("Done.")
             # Remove last layer
