@@ -46,17 +46,17 @@ RUN pip install ftfy regex numba timm vtk einops
 
 RUN apt-get install -y python3-tk
 
-# WORKDIR /home/appuser/EmbodiedOcc
+WORKDIR /home/appuser/EmbodiedOcc
 
-# COPY . /home/appuser/EmbodiedOcc
+COPY . /home/appuser/EmbodiedOcc
+
+ARG TORCH_ARCH
+ENV TORCH_CUDA_ARCH_LIST="${TORCH_ARCH}"
+ENV CUDA_HOME=/usr/local/cuda
+ENV FORCE_CUDA=1
+
+RUN cd /home/appuser/EmbodiedOcc/model/encoder/gaussianformer/ops && pip install --no-build-isolation .
+RUN cd /home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg && pip install --no-build-isolation .
 
 # RUN git clone https://github.com/DepthAnything/Depth-Anything-V2.git && git clone https://github.com/lukemelas/EfficientNet-PyTorch.git
-
-# ARG TORCH_ARCH
-# ENV TORCH_CUDA_ARCH_LIST="${TORCH_ARCH}"
-# ENV CUDA_HOME=/usr/local/cuda
-# ENV FORCE_CUDA=1
-
-# RUN cd /home/appuser/EmbodiedOcc/model/encoder/gaussianformer/ops && pip --no-build-isolation install -e .
-# RUN cd /home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg && pip --no-build-isolation install -e .
 # RUN cd /home/appuser/EmbodiedOcc/EfficientNet-PyTorch && pip --no-build-isolation install -e .

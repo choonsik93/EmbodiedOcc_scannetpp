@@ -49,13 +49,18 @@ run:
 	--shm-size 128G \
 	--net host --gpus all --privileged --name embodiedocc embodiedocc:latest /bin/bash
 
+# docker exec -it embodiedocc sh -c "cd model/encoder/gaussianformer/ops && pip install -e ."
+# docker exec -it embodiedocc sh -c "cd model/head/gaussian_occ_head/ops/localagg && pip install -e ."
 # git clone https://github.com/DepthAnything/Depth-Anything-V2.git
 # git clone https://github.com/lukemelas/EfficientNet-PyTorch.git
 # docker exec -it embodiedocc sh -c "cd model/encoder/gaussianformer/ops && pip install -e ."
 # docker exec -it embodiedocc sh -c "cd model/head/gaussian_occ_head/ops/localagg && pip install -e ."
+
 # export SCANNET_PATH=/media/sequor/PortableSSD/scannetpp && make run
-# torchrun --nproc_per_node=1 train_scannetpp.py --py-config config/train_scannetpp_config.py
-# torchrun --nproc_per_node=8 train_scannetpp.py --py-config config/train_scannetpp_config.py
+# torchrun --nproc_per_node=1 train_mono_scannetpp.py --py-config config/train_mono_config.py
+
+# export SCANNET_PATH=/data/scannetpp && make run
+# torchrun --nproc_per_node=8 train_mono_scannetpp.py --py-config config/train_mono_config.py
 
 # userful commands
 # xhost +Local:*  && xhost
