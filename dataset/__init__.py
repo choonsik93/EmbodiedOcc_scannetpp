@@ -9,6 +9,7 @@ from .dataset_wrapper_scannet_occ import Scannet_Scene_Occ_DatasetWrapper
 from .dataset_scannet_occ_openocc import Scannet_Scene_OpenOccupancy_Dataset
 from .dataset_scannet_online_occ import Scannet_Online_SceneOcc_Dataset
 from .dataset_wrapper_scannet_online import Scannet_Online_SceneOcc_DatasetWrapper
+from .dataset_scannetpp_occ import Scannetpp2xDataset
 
 
 def custom_collate_fn(data):

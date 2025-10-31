@@ -21,7 +21,8 @@ def vox2pix(cam_E, cam_k,
             vox_origin, voxel_size, 
             img_W, img_H, 
             scene_size,
-            dim_60_60_36=True):
+            dim_60_60_36=True,
+            voxel_dims=None):
     """
     compute the 2D projection of voxels centroids
     
@@ -57,10 +58,16 @@ def vox2pix(cam_E, cam_k,
     
     # Compute the voxels centroids in lidar cooridnates
     # vol_dim = np.ceil((vol_bnds[:,1]- vol_bnds[:,0])/ voxel_size).copy(order='C').astype(int)
-    if dim_60_60_36:
-        vol_dim = np.array([60, 60, 36])
+    if voxel_dims is not None:
+        if dim_60_60_36:
+            vol_dim = np.array(voxel_dims)
+        else:
+            vol_dim = np.array(voxel_dims) // 4
     else:
-        vol_dim = np.array([15, 15, 9])
+        if dim_60_60_36:
+            vol_dim = np.array([60, 60, 36])
+        else:
+            vol_dim = np.array([15, 15, 9])
     
     xv, yv, zv = np.meshgrid(
             range(vol_dim[0]),
@@ -75,12 +82,18 @@ def vox2pix(cam_E, cam_k,
           ], axis=0).astype(int).T
     
     # Project voxels'centroid from lidar coordinates to camera coordinates
-    cam_pts = fusion.TSDFVolume.vox2world(vox_origin, vox_coords, voxel_size)
+    # cam_pts = fusion.TSDFVolume.vox2world(vox_origin, vox_coords, voxel_size)
+    cam_pts = (vox_coords + 0.5) * voxel_size + vox_origin[None, :]
     world_pts = copy.deepcopy(cam_pts)
     cam_pts = fusion.rigid_transform(cam_pts, cam_E)
 
     # Project camera coordinates to pixel positions
-    projected_pix = fusion.TSDFVolume.cam2pix(cam_pts, cam_k)
+    # projected_pix = fusion.TSDFVolume.cam2pix(cam_pts, cam_k)
+    cam_k = cam_k.astype(np.float32)
+    focal = np.array([cam_k[0, 0], cam_k[1, 1]], dtype=np.float32)
+    centre = np.array([cam_k[0, 2], cam_k[1, 2]], dtype=np.float32)
+    projected_pix = cam_pts[:, :2] * focal[None, :] / cam_pts[:, 2:3] + centre[None, :]
+    projected_pix = np.round(projected_pix).astype(np.int64)
     pix_x, pix_y = projected_pix[:, 0], projected_pix[:, 1]
     
     # Eliminate pixels outside view frustum
@@ -90,7 +103,6 @@ def vox2pix(cam_E, cam_k,
                 np.logical_and(pix_y >= 0,
                 np.logical_and(pix_y < img_H,
                 pix_z > 0))))
-
 
     return projected_pix, fov_mask, pix_z, world_pts
 

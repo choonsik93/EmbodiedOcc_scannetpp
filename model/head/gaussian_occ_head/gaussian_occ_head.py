@@ -9,6 +9,9 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
+sys.path.append('./model/head/gaussian_occ_head/ops/localagg')
+from local_aggregate import LocalAggregator
+
 @MODELS.register_module()
 class GaussianOccHead(BaseModule):
     def __init__(
@@ -32,9 +35,6 @@ class GaussianOccHead(BaseModule):
         self.empty_label = empty_label
         self.num_classes = num_classes
         self.classes = list(range(num_classes))
-
-        sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg')
-        from local_aggregate import LocalAggregator
         self.aggregator = LocalAggregator(**cuda_kwargs)
         
         if with_empty:

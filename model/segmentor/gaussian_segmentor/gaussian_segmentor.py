@@ -1,19 +1,19 @@
+# import sys
+# sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/EfficientNet-PyTorch')
+# sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc')
+# sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/Depth-Anything-V2/metric_depth')
+# sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/model/depthbranch')
+
 import torch
 import numpy as np
 from copy import deepcopy
 from mmengine.model import BaseModule
 from mmengine.registry import MODELS
 from mmseg.registry import MODELS as MODELS_SEG
-import sys
-sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/EfficientNet-PyTorch')
 from efficientnet_pytorch import EfficientNet
-import sys
-sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc')
-sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/Depth-Anything-V2/metric_depth')
-sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/model/depthbranch')
-from depth_anything_v2.dpt import DepthAnythingV2
-from depthnet import DepthNet
-from unet2d import DecoderBN
+from metric_depth.depth_anything_v2.dpt import DepthAnythingV2
+from model.depthbranch.depthnet import DepthNet
+from model.depthbranch.unet2d import DecoderBN
 import torch.nn as nn
 from PIL import Image
 import cv2
@@ -49,7 +49,7 @@ class GaussianSegmentor(BaseModule):
                     'vitg': {'encoder': 'vitg', 'features': 384, 'out_channels': [1536, 1536, 1536, 1536]}
                 }
                 self.depthanything = DepthAnythingV2(**{**model_configs['vitb'], 'max_depth':20})
-                checkpoint = torch.load('/data1/code/wyq/gaussianindoor/EmbodiedOcc/checkpoints/finetune_scannet_depthanythingv2.pth', map_location='cpu')['model']
+                checkpoint = torch.load('./checkpoints/finetune_scannet_depthanythingv2.pth', map_location='cpu')['model']
                 new_state_dict = {}
                 for k, v in checkpoint.items():
                     if k.startswith('module.'):
