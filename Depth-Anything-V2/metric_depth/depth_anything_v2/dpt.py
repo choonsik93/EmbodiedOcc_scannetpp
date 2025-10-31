@@ -185,10 +185,14 @@ class DepthAnythingV2(nn.Module):
         return depth.squeeze(1)
     
     @torch.no_grad()
-    def infer_image(self, image, h_, w_, input_size=518):
+    def infer_image(self, raw_image, input_size=518):
+        image, (h, w) = self.image2tensor(raw_image, input_size)
+        
         depth = self.forward(image)
-        depth = F.interpolate(depth[:, None], (h_, w_), mode="bilinear", align_corners=True)[0, 0]
-        return depth
+        
+        depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True)[0, 0]
+        
+        return depth.cpu().numpy()
     
     def image2tensor(self, raw_image, input_size=518):        
         transform = Compose([

@@ -1,6 +1,0 @@
-# ninja log v7
-0	1204	1761814048564474863	/home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg/build/temp.linux-x86_64-3.9/src/forward.o	6c1eac1cb604ac96
-0	1208	1761814048564474863	/home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg/build/temp.linux-x86_64-3.9/src/backward.o	9daec54b694387a8
-0	13882	1761814048564474863	/home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg/build/temp.linux-x86_64-3.9/ext.o	7790d26d2a5c89b0
-0	23776	1761814048564474863	/home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg/build/temp.linux-x86_64-3.9/local_aggregate.o	c98290c4e6eae5f2
-0	27758	1761814048564474863	/home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg/build/temp.linux-x86_64-3.9/src/aggregator_impl.o	4502b1cdcbd9e531

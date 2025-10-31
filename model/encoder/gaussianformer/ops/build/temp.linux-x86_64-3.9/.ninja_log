@@ -1,3 +1,0 @@
-# ninja log v7
-0	8506	1761814031399919283	/home/appuser/EmbodiedOcc/model/encoder/gaussianformer/ops/build/temp.linux-x86_64-3.9/src/deformable_aggregation_cuda.o	2123cd0ec4f14d3f
-0	14011	1761814031399919283	/home/appuser/EmbodiedOcc/model/encoder/gaussianformer/ops/build/temp.linux-x86_64-3.9/src/deformable_aggregation.o	ddc1b4dc3ac13717

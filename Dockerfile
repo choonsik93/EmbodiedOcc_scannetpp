@@ -42,8 +42,21 @@ RUN pip install --no-cache-dir --no-build-isolation git+https://github.com/mit-h
 RUN pip install --no-cache-dir --no-build-isolation "git+https://github.com/facebookresearch/pytorch3d.git"
 RUN pip install --no-cache-dir --no-build-isolation -U git+https://github.com/NVIDIA/MinkowskiEngine --no-deps
 
-RUN pip install ftfy regex numba
-
-RUN pip install timm vtk einops
+RUN pip install ftfy regex numba timm vtk einops
 
 RUN apt-get install -y python3-tk
+
+# WORKDIR /home/appuser/EmbodiedOcc
+
+# COPY . /home/appuser/EmbodiedOcc
+
+# RUN git clone https://github.com/DepthAnything/Depth-Anything-V2.git && git clone https://github.com/lukemelas/EfficientNet-PyTorch.git
+
+# ARG TORCH_ARCH
+# ENV TORCH_CUDA_ARCH_LIST="${TORCH_ARCH}"
+# ENV CUDA_HOME=/usr/local/cuda
+# ENV FORCE_CUDA=1
+
+# RUN cd /home/appuser/EmbodiedOcc/model/encoder/gaussianformer/ops && pip --no-build-isolation install -e .
+# RUN cd /home/appuser/EmbodiedOcc/model/head/gaussian_occ_head/ops/localagg && pip --no-build-isolation install -e .
+# RUN cd /home/appuser/EmbodiedOcc/EfficientNet-PyTorch && pip --no-build-isolation install -e .
