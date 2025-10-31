@@ -1,2 +1,59 @@
-checkpoints
 workdir
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+pip-wheel-metadata/
+
+# Torch / CUDA extensions
+*.so
+*.dll
+*.dylib
+*.a
+.ninja_log
+.ninja_deps
+*.o
+*.obj
+.cuda_cache/
+torch_extensions/
+~/.cache/torch_extensions/
+**/.cache/torch_extensions/
+
+# Torch Hub / timm / checkpoints
+~/.cache/torch/
+**/.cache/torch/
+**/.cache/torch/hub/
+checkpoints/
+weights/
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+
+# CMake / make
+CMakeFiles/
+CMakeCache.txt
+cmake-build*/
+Makefile
+*.make
+
+# Logs & outputs
+logs/
+wandb/
+runs/
+outputs/
+*.log
+*.event*
+
+# IDE / OS
+.DS_Store
+.vscode/
+.idea/

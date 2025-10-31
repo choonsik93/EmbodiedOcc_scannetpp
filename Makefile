@@ -27,20 +27,6 @@ build-image:
 	docker build --build-arg USE_CUDA=$(USE_CUDA) \
 	--build-arg TORCH_ARCH=$(TORCH_CUDA_ARCH_LIST) \
 	-t embodiedocc:latest .
-	docker run -d --gpus all -it --rm --net=host \
-	-v /tmp/.X11-unix:/tmp/.X11-unix \
-	-v "${PWD}":/home/appuser/EmbodiedOcc \
-	-w /home/appuser/EmbodiedOcc \
-	-e DISPLAY=$DISPLAY \
-	--name=embodiedocc \
-	--ipc=host embodiedocc:latest
-	git clone https://github.com/DepthAnything/Depth-Anything-V2.git
-	git clone https://github.com/lukemelas/EfficientNet-PyTorch.git
-	docker exec -it embodiedocc sh -c "cd model/encoder/gaussianformer/ops && pip install -e ."
-	docker exec -it embodiedocc sh -c "cd model/head/gaussian_occ_head/ops/localagg && pip install -e ."
-	docker exec -it embodiedocc sh -c "cd EfficientNet-PyTorch && pip install -e ."
-	docker commit embodiedocc embodiedocc:latest
-	docker stop embodiedocc
 
 run:
 	docker run -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$(DISPLAY) -e USER=$(USER) \
@@ -52,8 +38,6 @@ run:
 	-v "${SCANNET_PATH}":/data \
 	--shm-size 128G \
 	--net host --gpus all --privileged --name embodiedocc embodiedocc:latest /bin/bash
-
-
 
 # export SCANNET_PATH=/media/sequor/PortableSSD/scannetpp && make run
 # torchrun --nproc_per_node=1 train_scannetpp.py --py-config config/train_scannetpp_config.py
