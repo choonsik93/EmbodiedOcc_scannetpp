@@ -44,7 +44,6 @@ weights/
 CMakeFiles/
 CMakeCache.txt
 cmake-build*/
-Makefile
 *.make
 
 # Logs & outputs
