@@ -222,6 +222,12 @@ class Scannetpp2xDataset(data.Dataset):
             data_info = self.parse_data_info(raw)
             if isinstance(data_info, dict):
                 data_list.append(data_info)
+
+        self.view_index = []
+        for si, info in enumerate(data_list):
+            n = len(info['img_path'])
+            for vi in range(n):
+                self.view_index.append((si, vi))
         return data_list
 
     @staticmethod
@@ -257,7 +263,7 @@ class Scannetpp2xDataset(data.Dataset):
     # PyTorch Dataset interface
     # ---------------------------
     def __len__(self) -> int:
-        return len(self.data_list)
+        return len(self.view_index)
 
     def __getitem__(self, idx: int):
         """Return (imgs, meta, occs) for the given index.
@@ -266,37 +272,53 @@ class Scannetpp2xDataset(data.Dataset):
         meta: dict with intrinsics/extrinsics (resized), paths, and misc
         occs: (N_pts, 4) int64 [x, y, z, label] from parse_ann_info()
         """
-        info = self.data_list[idx]
 
+        scene_idx, sel_idx = self.view_index[idx]
+        info = self.data_list[scene_idx]
         meta = {}
         meta['name'] = info['scan_id']
         meta['scene_size'] = self.scene_size
-        num_scene_images = len(info['img_path'])
-        replace = num_scene_images < self.num_frames
-        sel_idx = np.random.choice(num_scene_images, self.num_frames, replace=replace)
 
-        # Original code assumes self.num_frames == 1
-        sel_idx = sel_idx[0]
+        rgb_path   = info['img_path'][sel_idx]
+        depth_path = info['depth_img_path'][sel_idx]
+        world2cam  = info['depth2img']['extrinsic'][sel_idx]
+        org_cam_intrinsic = info['depth2img']['intrinsic']
+        cam2world  = np.linalg.inv(world2cam)
+        meta['rgb_path']  = rgb_path
+        meta['cam2world'] = cam2world
+        meta['world2cam'] = world2cam
 
-        # gather img_path, depth_img_path, cam2img, depth2img.extrinsics
-        # rgb_path = [info['img_path'][i] for i in sel_idx]
-        # depth_path = [info['depth_img_path'][i] for i in sel_idx]
-        # world2cam = [info['depth2img']['extrinsic'][i] for i in sel_idx]
+        # info = self.data_list[idx]
+
+        # meta = {}
+        # meta['name'] = info['scan_id']
+        # meta['scene_size'] = self.scene_size
+        # num_scene_images = len(info['img_path'])
+        # replace = num_scene_images < self.num_frames
+        # sel_idx = np.random.choice(num_scene_images, self.num_frames, replace=replace)
+
+        # # Original code assumes self.num_frames == 1
+        # sel_idx = sel_idx[0]
+
+        # # gather img_path, depth_img_path, cam2img, depth2img.extrinsics
+        # # rgb_path = [info['img_path'][i] for i in sel_idx]
+        # # depth_path = [info['depth_img_path'][i] for i in sel_idx]
+        # # world2cam = [info['depth2img']['extrinsic'][i] for i in sel_idx]
+        # # org_cam_intrinsic = info['depth2img']['intrinsic']
+        # # world2cam = np.stack(world2cam, axis=0)  # (N_views, 4, 4)
+        # # cam2world = np.linalg.inv(world2cam)  # (N_views, 4, 4)
+        # # meta['rgb_path'] = rgb_path
+        # # meta['cam2world'] = cam2world
+        # # meta['world2cam'] = world2cam
+
+        # rgb_path = info['img_path'][sel_idx]
+        # depth_path = info['depth_img_path'][sel_idx]
+        # world2cam = info['depth2img']['extrinsic'][sel_idx]
         # org_cam_intrinsic = info['depth2img']['intrinsic']
-        # world2cam = np.stack(world2cam, axis=0)  # (N_views, 4, 4)
-        # cam2world = np.linalg.inv(world2cam)  # (N_views, 4, 4)
+        # cam2world = np.linalg.inv(world2cam)
         # meta['rgb_path'] = rgb_path
         # meta['cam2world'] = cam2world
         # meta['world2cam'] = world2cam
-
-        rgb_path = info['img_path'][sel_idx]
-        depth_path = info['depth_img_path'][sel_idx]
-        world2cam = info['depth2img']['extrinsic'][sel_idx]
-        org_cam_intrinsic = info['depth2img']['intrinsic']
-        cam2world = np.linalg.inv(world2cam)
-        meta['rgb_path'] = rgb_path
-        meta['cam2world'] = cam2world
-        meta['world2cam'] = world2cam
 
         depth_gt_np = Image.open(depth_path).convert('I;16')
         depth_gt_np = np.array(depth_gt_np) / 1000.0
@@ -362,13 +384,13 @@ class Scannetpp2xDataset(data.Dataset):
         vox_origin = self.scene_min_bound
         meta['vox_origin'] = np.round(np.array(vox_origin, dtype=np.float32), 4)
         target = np.load(info['occ_path']).astype(np.int64)  # shape (N, 4): [x, y, z, label]
-        target[target == 0] = 12
-        target[target == 255] = 0 
 
         vox_W, vox_H, vox_D = self.grid_size_occ
         # target to dense occ
         occ = np.zeros((vox_W, vox_H, vox_D), dtype=np.uint8)
         occ[target[:, 0], target[:, 1], target[:, 2]] = target[:, 3].astype(np.uint8)
+        occ[occ == 0] = 12
+        occ[occ == 255] = 0
         nonemptymask = (occ != 12)
         occ = [occ] # [1, 240, 240, 80]
         

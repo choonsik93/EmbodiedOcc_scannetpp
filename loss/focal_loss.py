@@ -107,21 +107,21 @@ class FocalLoss(BaseLoss):
         num_classes = pred.size(1)
         pred = pred.permute(0, 2, 3, 4, 1).reshape(-1, num_classes)[visible_mask]
         target = target.reshape(-1)[visible_mask]
-        # if target.numel() == 0:
-        #     loss_cls = torch.tensor(0.0, device=pred.device)
-        # else:
-        #     loss_cls = sigmoid_focal_loss(
-        #         pred,
-        #         target,
-        #         weight_mask,
-        #         gamma=self.gamma,
-        #         alpha=self.alpha)
-        loss_cls = sigmoid_focal_loss(
+        if target.numel() == 0:
+            loss_cls = torch.tensor(0.0, device=pred.device)
+        else:
+            loss_cls = sigmoid_focal_loss(
                 pred,
                 target,
                 weight_mask,
                 gamma=self.gamma,
                 alpha=self.alpha)
+        # loss_cls = sigmoid_focal_loss(
+        #         pred,
+        #         target,
+        #         weight_mask,
+        #         gamma=self.gamma,
+        #         alpha=self.alpha)
         return loss_cls
     
     

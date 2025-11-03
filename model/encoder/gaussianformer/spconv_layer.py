@@ -7,6 +7,20 @@ import spconv.pytorch as spconv
 from .utils import cartesian
 from functools import partial
 
+# # For debug
+# import torch.distributed as dist
+# import sys, os
+
+# def ddp_rank():
+#     return dist.get_rank() if (dist.is_available() and dist.is_initialized()) else 0
+
+# def ddp_world():
+#     return dist.get_world_size() if (dist.is_available() and dist.is_initialized()) else 1
+
+# def print_all_ranks(msg):
+#     r = ddp_rank()
+#     print(f"[rank {r}] {msg}", flush=True)  # flush로 버퍼링 방지
+
 
 @MODELS.register_module()
 class SparseConv3D(BaseModule):
@@ -54,7 +68,7 @@ class SparseConv3D(BaseModule):
         # sparsify
         # anchor_xyz = self.get_xyz(anchor).flatten(0, 1) 
         # import pdb; pdb.set_trace()
-        anchor_xyz = my_get(anchor).flatten(0, 1) 
+        anchor_xyz = my_get(anchor).flatten(0, 1)
         indices = anchor_xyz - anchor_xyz.min(0, keepdim=True)[0]
         indices = indices / self.grid_size[None, :] # bg, 3
         indices = indices.to(torch.int32)
@@ -63,7 +77,16 @@ class SparseConv3D(BaseModule):
                 bs, 1, 1).expand(-1, g, -1).flatten(0, 1),
             indices], dim=-1)
         
-        spatial_shape = indices.max(0)[0]
+        #spatial_shape = indices.max(0)[0]
+        spatial_shape = (indices.max(0).values + 1).to(torch.int32)
+
+        # # 네 코드
+        # print_all_ranks(f"grid_size = {self.grid_size.tolist()}")
+        # print_all_ranks(f"span = {(anchor_xyz.max(0).values - anchor_xyz.min(0).values).tolist()}")
+        # print_all_ranks(f"span/grid = {((anchor_xyz.max(0).values - anchor_xyz.min(0).values) / self.grid_size).tolist()}")
+        # print_all_ranks(f"indices max = {indices.max(0).values.tolist()}")
+        # print_all_ranks(f"spatial_shape = {spatial_shape.tolist()}")
+
         # import pdb; pdb.set_trace()
         input = spconv.SparseConvTensor(
             instance_feature.flatten(0, 1), # bg, c [34560, 96]
