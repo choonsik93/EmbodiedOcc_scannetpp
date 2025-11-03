@@ -226,7 +226,8 @@ class Scannetpp2xDataset(data.Dataset):
         self.view_index = []
         for si, info in enumerate(data_list):
             n = len(info['img_path'])
-            for vi in range(n):
+            #for vi in range(n):
+            for vi in range(1):
                 self.view_index.append((si, vi))
         return data_list
 

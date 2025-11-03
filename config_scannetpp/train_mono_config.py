@@ -24,7 +24,7 @@ ignore_label = 0
 empty_idx = 12   # 0 ignore, 1~11 objects, 12 empty
 cls_dims = 13
 
-pc_range = [-51.2, -51.2, -5.0, 51.2, 51.2, 3.0] 
+pc_range = [-6.0, -6.0, -0.78, 6.0, 6.0, 3.22]
 scale_range = [0.01, 0.08] 
 image_size = [480, 640]
 resize_lim = [1.0, 1.0] 
@@ -36,8 +36,8 @@ _dim_ = 96
 num_cams = 1
 num_heads = 3
 num_levels = 4
-num_anchor = 32400 
-num_anchor_init = 16200
+num_anchor = 16200 
+num_anchor_init = 8100
 num_cross_layer = 3
 num_self_layer = 3
 num_decoder_fillhead = 2
@@ -142,7 +142,7 @@ model = dict(
         cuda_kwargs=dict(
             scale_multiplier=3,
             H=240, W=240, D=80,
-            pc_min=[-51.2, -51.2, -5.0],
+            pc_min=[-6.0, -6.0, -0.78],
             grid_size=0.05), 
         with_empty=True,
         empty_args=dict(
@@ -163,7 +163,7 @@ loss = dict(
             weight=100.0, 
             gamma=2.0,
             alpha=0.25,
-            cls_freq=[5080655412, 722756, 44793226, 41084591, 3416464, 21897101, 10609339, 13846320, 23470172, 263393, 30949122, 9871618, 3196722886],
+            cls_freq=[294671, 391874, 400367, 662557, 53231, 95512, 11802, 23398, 89326, 4273, 156463, 600672, 227615854],
             ignore_label=ignore_label,
             input_dict={
                 'pred': 'ce_input',

@@ -19,9 +19,6 @@ from timm.scheduler import CosineLRScheduler
 import open3d as o3d
 import warnings
 warnings.filterwarnings("ignore")
-import sys
-sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc')
-sys.path.append('/data1/code/wyq/gaussianindoor/EmbodiedOcc/Depth-Anything-V2/metric_depth')
 from PIL import Image
 
 def pass_print(*args, **kwargs):

@@ -15,7 +15,7 @@ seed = 1
 print_freq = 50
 eval_freq = 1
 max_epochs = 10
-load_from = '/home/wyq/WorkSpace/checkpoints_from/mono5/latest.pth' # path/to/monocheckpoint
+load_from = 'workdir/train_scannetpp/epoch_1.pth'
 find_unused_parameters = True
 track_running_stats = True
 flag_depthanything_as_gt = True
@@ -24,8 +24,8 @@ ignore_label = 0
 empty_idx = 12   # 0 ignore, 1~11 objects, 12 empty
 cls_dims = 13
 
-pc_range = [-51.2, -51.2, -5.0, 51.2, 51.2, 3.0] 
-scale_range = [0.01, 0.08] # FIXME
+pc_range = [-6.0, -6.0, -0.78, 6.0, 6.0, 3.22]
+scale_range = [0.01, 0.08] 
 image_size = [480, 640]
 resize_lim = [1.0, 1.0] 
 num_frames = 1
@@ -36,7 +36,7 @@ _dim_ = 96
 num_cams = 1
 num_heads = 3
 num_levels = 4
-num_anchor = 16200 # FIXME
+num_anchor = 16200 
 num_anchor_init = 8100
 num_cross_layer = 3
 num_self_layer = 3
@@ -56,7 +56,7 @@ refine_layer = dict(
     pc_range=pc_range,
     scale_range=scale_range,
     restrict_xyz=True,
-    unit_xyz=[0.1, 0.1, 0.06], # FIXME
+    unit_xyz=[0.1, 0.1, 0.05], 
     refine_manual=[0, 1, 2],
     semantic_dim=cls_dims-1,
     semantics_activation=semantics_activation,
@@ -67,18 +67,8 @@ spconv_layer=dict(
     in_channels=_dim_,
     embed_channels=_dim_,
     pc_range=pc_range,
-    grid_size=[0.08]*3, # FIXME
+    grid_size=[0.05]*3, 
     kernel_size=3,
-)
-
-spconv_layer_fillhead=dict(
-    type='SparseConv3D',
-    in_channels=_dim_,
-    embed_channels=_dim_,
-    pc_range=pc_range,
-    grid_size=[0.08]*3,
-    kernel_size=3,
-    dilation=2
 )
 
 model = dict(
@@ -151,9 +141,9 @@ model = dict(
         num_classes=cls_dims,
         cuda_kwargs=dict(
             scale_multiplier=3,
-            H=60, W=60, D=36,
-            pc_min=[-51.2, -51.2, -5.0],
-            grid_size=0.08), # FIXME
+            H=240, W=240, D=80,
+            pc_min=[-6.0, -6.0, -0.78],
+            grid_size=0.05), 
         with_empty=True,
         empty_args=dict(
             mean=[0, 0, 0],
@@ -170,10 +160,10 @@ loss = dict(
     loss_cfgs=[
         dict(
             type='FocalLoss',
-            weight=100.0, # FIXME
+            weight=100.0, 
             gamma=2.0,
             alpha=0.25,
-            cls_freq=[5080655412, 722756, 44793226, 41084591, 3416464, 21897101, 10609339, 13846320, 23470172, 263393, 30949122, 9871618, 3196722886],
+            cls_freq=[294671, 391874, 400367, 662557, 53231, 95512, 11802, 23398, 89326, 4273, 156463, 600672, 227615854],
             ignore_label=ignore_label,
             input_dict={
                 'pred': 'ce_input',
@@ -191,7 +181,7 @@ loss = dict(
             type='Sem_Scal_Loss',
             weight=1.0,
             ignore_label=ignore_label,
-            sem_cls_range=[1, 12], # FIXME
+            sem_cls_range=[1, 12],
             input_dict={
                 'pred': 'ce_input',
                 'ssc_target': 'ce_label',
@@ -208,11 +198,13 @@ loss = dict(
     ]
 )
 
-data_path = '/data1/code/wyq/gaussianindoor/EmbodiedOcc/data/occscannet' # path/to/your/data/occscannet
+data_path = '/data'
+dataset_type = 'Scannetpp2xDataset'
 
 train_dataset_config = dict(
-    type='Scannet_Scene_OpenOccupancy_Dataset',
+    type = dataset_type,
     data_path = data_path,
+    ann_file='scannetpp_infos_train.pkl',
     num_frames = num_frames,
     offset = offset,
     empty_idx = empty_idx,
@@ -222,8 +214,9 @@ train_dataset_config = dict(
 )
 
 val_dataset_config = dict(
-    type='Scannet_Scene_OpenOccupancy_Dataset',
+    type = dataset_type,
     data_path = data_path,
+    ann_file = 'scannetpp_infos_val.pkl',
     num_frames = num_frames,
     offset = offset,
     empty_idx=empty_idx,

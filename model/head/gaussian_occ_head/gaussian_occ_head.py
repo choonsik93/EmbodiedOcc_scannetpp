@@ -196,6 +196,40 @@ class GaussianOccHead(BaseModule):
         opacities = opacities[mask].unsqueeze(0)
         scales = scales[mask].unsqueeze(0)
         CovInv = CovInv[mask].unsqueeze(0)
+
+        # import open3d as o3d
+        # o3d_pcd = o3d.geometry.PointCloud()
+        # o3d_pcd.points = o3d.utility.Vector3dVector(means[0].cpu().numpy())
+        # o3d_cam_axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.5, origin=[0,0,0])
+        # o3d_cam_axis.transform(metas[0]['cam2world'].to(torch.float32).cpu().numpy())
+        # o3d_world_axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=6.0, origin=[0,0,0])
+        # o3d_sampled_pcd = o3d.geometry.PointCloud()
+        # point = sampled_xyz[0].cpu().numpy()
+        # color = label[0][0].reshape(-1).cpu().numpy()
+        # mask = color != 12 
+        # NYU_COLORS = np.array([
+        #     [ 22, 191, 206, 255], # 00 free
+        #     [214,  38,  40, 255], # 01 ceiling
+        #     [ 43, 160,  43, 255], # 02 floor
+        #     [158, 216, 229, 255], # 03 wall
+        #     [114, 158, 206, 255], # 04 window
+        #     [204, 204,  91, 255], # 05 chair
+        #     [255, 186, 119, 255], # 06 bed
+        #     [147, 102, 188, 255], # 07 sofa
+        #     [ 30, 119, 181, 255], # 08 table
+        #     [188, 188,  33, 255], # 09 tvs
+        #     [255, 127,  12, 255], # 10 furniture
+        #     [196, 175, 214, 255], # 11 objects
+        #     [153, 153, 153, 255], # 12 unknown
+        # ]).astype(np.uint8)
+        # color = NYU_COLORS[color, :3] / 255.0
+        # fov_mask = metas[0]['fov_mask'].reshape(-1).cpu().numpy()
+        # mask = mask & (fov_mask == 1)
+        # point = point[mask]
+        # color = color[mask]
+        # o3d_sampled_pcd.points = o3d.utility.Vector3dVector(point)
+        # o3d_sampled_pcd.colors = o3d.utility.Vector3dVector(color)
+        # o3d.visualization.draw_geometries([o3d_pcd, o3d_cam_axis, o3d_world_axis, o3d_sampled_pcd])
         
         origin_use = metas[0]['vox_origin'].to(torch.float32).to(means.device)
         

@@ -36,7 +36,9 @@ build-image:
 	--ipc=host embodiedocc:latest
 	git clone https://github.com/DepthAnything/Depth-Anything-V2.git
 	git clone https://github.com/lukemelas/EfficientNet-PyTorch.git
-	docker exec -it embodiedocc sh -c "cd EfficientNet-PyTorch && pip install -e ." 
+	docker exec -it embodiedocc sh -c "cd EfficientNet-PyTorch && pip install -e ."
+	docker commit embodiedocc embodiedocc:latest
+	docker stop embodiedocc
 
 run:
 	docker run -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$(DISPLAY) -e USER=$(USER) \
@@ -55,9 +57,16 @@ run:
 # docker exec -it embodiedocc sh -c "cd model/encoder/gaussianformer/ops && pip install -e ."
 # docker exec -it embodiedocc sh -c "cd model/head/gaussian_occ_head/ops/localagg && pip install -e ."
 
+# local computer
+
 # export SCANNET_PATH=/media/sequor/PortableSSD/scannetpp && make run
+
+# train
 # torchrun --nproc_per_node=1 train_mono_scannetpp.py --py-config config_scannetpp/train_mono_config.py
 
+# vis
+# torchrun --nproc_per_node=1 vis_mono_scannetpp.py --py-config config_scannetpp/train_mono_config.py --work-dir workdir/train_scannetpp 
+ 
 # export SCANNET_PATH=/data/scannetpp && make run
 # torchrun --nproc_per_node=8 train_mono_scannetpp.py --py-config config_scannetpp/train_mono_config.py
 
